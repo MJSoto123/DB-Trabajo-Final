@@ -50,3 +50,50 @@ code {
   align-items: center;
   padding: 0px 20px ;
 }
+
+/* Carousel */
+
+ul{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  transition: 300ms linear;
+}
+
+li {
+  flex-grow: 1;
+  display: block;
+  padding: 0px 2.5%;
+  width: 100%;
+  text-align: center;
+}
+.my-coursel {
+  overflow: hidden;
+}
+.carousel-img {
+  width: 100%;
+}
+
+/* Categorias */
+
+.products-container {
+  display: flex;
+  width: 96%;
+  padding: 0px 2%;
+}
+.product {
+  width: 29%;
+  padding: 0px 2%;
+}
+.product-img {
+  width: 100%;
+}
+.product-title {
+  font-size: 20px;
+}
+.product-category{
+  font-weight: 700;
+  padding: 0px 25px;
+}
