@@ -22,6 +22,11 @@ app.use(bodypaser.json())
 //     app.use(morgan('dev'))
 // }
 
+
+app.use(cors({
+    origin: "https://db-final-proyect.herokuapp.com"
+}))
+
 // mongoose.connection.on("open", () => {
 //   console.log("Base de datos conectada");
 // });

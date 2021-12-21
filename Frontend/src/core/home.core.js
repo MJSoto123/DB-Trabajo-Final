@@ -1,12 +1,37 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { getAllCategories } from "../api/categories.api";
 import { Carousel } from "../components/carousel.component";
 import { Categories } from "../components/categories.component";
 import { Header } from "../components/header.component";
 
 export const Home = () => {
+
+  const [data, setData] = useState({
+    categories: []
+  });
+
+  const categories = () => {
+    getAllCategories().then((d) => {
+      const element = [];
+      for (let i = 0; i < d.length; i++) {
+        element.push(d[i].category);
+      }
+      setData({
+        categories: element
+      });
+    })
+  }
+
+  useEffect(() => {
+    categories()
+  }, [])
+  
+
   return (
     <div>
-      <Header />
+      <Header
+        categories={data.categories}
+      />
       <Carousel>
         <div className="carousel-container">
           <img

@@ -1,6 +1,6 @@
 import React from "react";
 
-export const Header = () => {
+export const Header = (props) => {
   const login = () => {
     if (true) {
       return (
@@ -10,6 +10,20 @@ export const Header = () => {
       );
     }
   };
+  const console2 = () => {
+    console.log(props);
+  }
+  
+  // let itemList=items.map((item,index)=>{
+  //   return <li key={index}>{item}</li>
+  // })
+  const menu_categories = () => {
+    let itemList = props.map((item)=>{
+      return <a href="/" className="categoria-link">{item.category}</a>
+    })
+    return itemList
+  }
+
   return (
     <div className="header-container">
       <div className="logo-container">
@@ -25,14 +39,10 @@ export const Header = () => {
             className="lupa"
             src="https://icones.pro/wp-content/uploads/2021/06/icone-loupe-noir.png"
             alt="new"
-          />
+            />
         </div>
-        <div className="categoria">
-          <a className="categoria-link" href="">Cañas</a>
-          <a className="categoria-link" href="">Carretes</a>
-          <a className="categoria-link" href="">Sedales</a>
-          <a className="categoria-link" href="">Accesorios</a>
-          <a className="categoria-link" href="">Equipamento</a>
+        <div>
+          {menu_categories()}
         </div>
       </div>
       <div className="registro">
