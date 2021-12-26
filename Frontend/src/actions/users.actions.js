@@ -1,0 +1,3 @@
+export const TYPES = {
+  READ_USERS_DATA: "READ_USERS_DATA"
+}

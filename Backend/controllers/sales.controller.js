@@ -58,3 +58,18 @@ exports.SalesById = (req, res, next, id) => {
     next();
   });
 };
+
+// exports.bestSellers = (req, res) => {
+
+//   Sales.find()
+//     .populate("product")
+//     .exec((err, sales) => {
+//       if (err) {
+//         return res.status(400).json({
+//           error: "No se encontró el usuario",
+//         });
+//       }
+//       console.log(sales);
+//       res.json(sales);
+//     });
+// };

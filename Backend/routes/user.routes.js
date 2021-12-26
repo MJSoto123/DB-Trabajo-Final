@@ -4,8 +4,9 @@ const userController = require('../controllers/user.controller.js')
 //Exporta rutas
 
 router.get('/list', userController.list)
+router.get('/listdate', userController.listDate)
 router.post('/signup', userController.signup)
-router.post('/signin', userController.signin)
+router.post('/delete', userController.delete)
 
 router.param('UserId', userController.UserById);
 module.exports = router;

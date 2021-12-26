@@ -1,7 +1,7 @@
 import { API } from "../config/config";
 
 export const getAllCategories = () => {
-  return fetch(`${API}/categories/list`, {
+  return fetch(`${API}/categories/getlist`, {
     method: "GET",
     headers: {
       "Content-Type": "aplication/json"
@@ -12,6 +12,5 @@ export const getAllCategories = () => {
   }).catch(error => {
     console.log(error);
   })
-  
 }
 // https://db-final-proyect.herokuapp.com/categories/list

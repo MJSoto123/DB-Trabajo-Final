@@ -1,37 +1,60 @@
-import React from "react";
+import React, { useReducer, useEffect } from "react";
+import { Link } from "react-router-dom" 
+import { TYPES } from "../actions/components.actions";
+import { getAllCategories } from "../api/categories.api";
+import { isAuthenticated } from "../functions/isAutenticated.function";
+import {
+  componentsInitialState,
+  ComponentsReducer,
+} from "../reducers/components.reducers";
 
-export const Header = (props) => {
+export const Header = () => {
+  const [state, dispatch] = useReducer(
+    ComponentsReducer,
+    componentsInitialState
+  );
+
+  useEffect(() => {
+    console.log("hola");
+    getAllCategories().then((res) => {
+      console.log(res);
+      dispatch({ type: TYPES.READ_CATEGORIES_DATA, payload: res });
+    });
+  }, []);
+
   const login = () => {
-    if (true) {
-      return (
-        <div className="sesion-container">
-          <button>Registrarse</button>
-        </div>
-      );
+    //Para menu principal: Iniciar Sesión
+    // Para lugar de registro: Resgistrase
+    // Para lugar de registro: Iniciar Sesion
+    // Cuando la sesion esté iniciada: Cerrar Sesión
+    let text,
+      link = "";
+    if (!isAuthenticated()) {
+      text = "Iniciar Sesión";
+      link = "/signin";
+    } else {
+      text = "Cerrar Sesión";
+      link = "/signout";
     }
+    return (
+      <div className="sesion-container">
+        <a href={link}>
+          <button type="button">{text}</button>
+        </a>
+      </div>
+    );
   };
-  const console2 = () => {
-    console.log(props);
-  }
-  
-  // let itemList=items.map((item,index)=>{
-  //   return <li key={index}>{item}</li>
-  // })
-  const menu_categories = () => {
-    let itemList = props.map((item)=>{
-      return <a href="/" className="categoria-link">{item.category}</a>
-    })
-    return itemList
-  }
 
   return (
     <div className="header-container">
       <div className="logo-container">
-        <img
-          className="logo"
-          src="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350"
-          alt="new"
-        />
+        <Link to="/">
+          <img
+            className="logo"
+            src="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350"
+            alt="new"
+          />
+        </Link>
       </div>
       <div className="centro-container">
         <div className="lupa-container">
@@ -39,15 +62,17 @@ export const Header = (props) => {
             className="lupa"
             src="https://icones.pro/wp-content/uploads/2021/06/icone-loupe-noir.png"
             alt="new"
-            />
+          />
         </div>
-        <div>
-          {menu_categories()}
+        <div className="categories-container">
+          {state.categories.map((e, i) => (
+            <div className="category" key={i}>
+              {e}
+            </div>
+          ))}
         </div>
       </div>
-      <div className="registro">
-        {login()}
-      </div>
+      <div className="registro">{login()}</div>
     </div>
   );
 };

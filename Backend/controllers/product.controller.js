@@ -1,4 +1,6 @@
 const Product = require("../models/product.model");
+const Categories = require("../models/categories.model");
+
 const formidable = require("formidable");
 
 // Formulario HTML
@@ -42,16 +44,44 @@ const formidable = require("formidable");
 // Postman
 
 exports.create = (req, res) => {
-  const product = new Product(req.body);
-  product.save((err, result) => {
-    if (err) {
-      return res.status(400).json({
-        error: err,
+  const data = req.body;
+  var auxCat = data.category.split("-");
+  // console.log(auxCat[0]);
+  Categories.find({ category: auxCat[0], subcategory: auxCat[1] })
+  .exec((err, result) => {
+      if (err) {
+        return res.status(400).json({
+          error: "Categoria Invalida",
+        });
+      }
+      let id = result[0]._id.toString();
+      // console.log(id);
+      data.category = id;
+      // console.log(data);
+      const product = new Product(req.body);
+      product.save((err, result) => {
+        if (err) {
+          return res.status(400).json({
+            error: err,
+          });
+        }
+        return res.json(result);
       });
     }
-    return res.json(result);
-  });
+  );
 };
+
+// exports.create = (req, res) => {
+//   const product = new Product(req.body);
+//   product.save((err, result) => {
+//     if (err) {
+//       return res.status(400).json({
+//         error: err,
+//       });
+//     }
+//     return res.json(result);
+//   });
+// };
 
 //BORRAR !!!!
 // exports.createPack = (req, res) => {
@@ -63,70 +93,126 @@ exports.create = (req, res) => {
 // };
 
 exports.list = (req, res) => {
-  let order = req.query.order ? req.query.order : "asc";
-  let sortBy = req.query.sortBy ? req.query.sortBy : "name";
-
   Product.find()
-    .sort([[sortBy, order]])
+    .sort({ model : "asc"})
     .exec((err, products) => {
       if (err) {
         return res.status(400).json({
-          error: "Productos no encontrados."
+          error: "Productos no encontrados.",
         });
       }
       res.json(products);
     });
 };
 
-exports.checkStock = (req,res) => {
-  const {id, cant} = req.body;
+exports.listStock = (req, res) => {
+  Product.find()
+    .sort({ stock : "desc"})
+    .exec((err, products) => {
+      if (err) {
+        return res.status(400).json({
+          error: "Productos no encontrados.",
+        });
+      }
+      res.json(products);
+    });
+};
+
+
+exports.checkStock = (req, res) => {
+  const { id, cant } = req.body;
   Product.findById(id).exec((err, Product) => {
     if (err || !Product) {
       return res.status(400).json({
-        error: "El producto no fue encontrado o no existe."
+        error: "El producto no fue encontrado o no existe.",
       });
     }
-    if( Product.stock < cant){
+    if (Product.stock < cant) {
       return res.status(400).json({
-        status: false
+        status: false,
       });
     }
     return res.json({
-      status: true
+      status: true,
     });
   });
-}
+};
 
-exports.modifyStock = (req,res) => {
-  const {id, cant, operation} = req.body;
+exports.modifyStock = (req, res) => {
+  const { id, cant, operation } = req.body;
   Product.findById(id).exec((err, Product) => {
     if (err || !Product) {
       return res.status(400).json({
-        error: "El producto no fue encontrado o no existe."
+        error: "El producto no fue encontrado o no existe.",
       });
     }
-    if(operation == "+"){
+    if (operation == "+") {
       Product.stock = Product.stock + cant;
-    }
-    else{
+    } else {
       Product.stock = Product.stock - cant;
     }
     Product.save();
-    return( res.json({
+    return res.json({
       message: "Operación realizada con éxito.",
-      Product
-    }))
+      Product,
+    });
   });
-}
+};
 
 exports.ProductById = (req, res, next, id) => {
   Product.findById(id).exec((err, Product) => {
     if (err || !Product) {
       return res.status(400).json({
-        error: "El producto no fue encontrado o no existe."
+        error: "El producto no fue encontrado o no existe.",
       });
     }
     req.Product = Product;
     next();
+  });
+};
+
+exports.getOffers = (req, res) => {
+  Product.find().exec((err, products) => {
+    if (err) {
+      return res.status(400).json({
+        error: "Productos no encontrados.",
+      });
+    }
+    products.sort(function (a, b) {
+      return a.discount > b.discount ? -1 : a.discount < b.discount ? 1 : 0;
+    });
+
+    const ans = [];
+    for (var i = 0; i < 5; i++) {
+      ans.push(products[i]);
+    }
+
+    // console.log(ans);
+    res.json(ans);
+  });
+};
+
+exports.modify = (req, res) => {
+  const { id, model, discount, brand, description, category, price, stock } =
+    req.body;
+  Product.findOne({ id }, (error, product) => {
+    if (error || !product) {
+      return res.status(400).json({
+        error: "Este producto no existe",
+      });
+    }
+
+    product.model = model;
+    product.discount = discount;
+    product.brand = brand;
+    product.description = description;
+    product.category = category;
+    product.price = price;
+    product.stock = stock;
+    product.save();
+
+    return res.status(200).json({
+      message: "Ok",
+    });
   });
 };

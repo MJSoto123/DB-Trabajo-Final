@@ -6,9 +6,9 @@ const cors = require('cors');
 const mongoose = require("mongoose");
 
 const app = express();
-// dotenv.config({
-//     path: './config/config.env'
-// })
+dotenv.config({
+    path: './config/config.env'
+})
 
 //Usar el body-parser
 

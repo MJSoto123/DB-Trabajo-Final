@@ -7,5 +7,7 @@ router.get('/list', salesController.list);
 router.post('/create', salesController.create);
 router.param('salesid', salesController.SalesById);
 router.post('/listbyuserid', salesController.listByUserId);
+// router.post('/bestsellers', salesController.bestSellers);
+
 
 module.exports = router;

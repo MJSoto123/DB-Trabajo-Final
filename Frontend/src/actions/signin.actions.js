@@ -1,0 +1,3 @@
+export const TYPES = {
+  READ_CATEGORIES_DATA: "READ_CATEGORIES_DATA"
+}

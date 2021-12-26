@@ -97,3 +97,80 @@ li {
   font-weight: 700;
   padding: 0px 25px;
 }
+
+.categories-container {
+  display: flex;
+}
+
+.category {
+  padding: 5px 12px;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+/* Product */
+.single_product-container {
+  padding: 2% 2%;
+  display: flex;
+  margin: 4%;
+  border-radius: 10px;
+  background: rgba(236, 236, 236, 0.507);
+}
+
+.single_product-img-container {
+  min-width: 46vw;
+  max-width: 46vw;
+  align-items: center;
+  justify-content: center;
+}
+
+.single_product-img {
+  max-width: 42vw;
+  align-self: center;
+  border-radius: 15px;
+  filter: drop-shadow(5px 5px 10px rgba(73, 73, 73, 0.24));
+}
+
+.single-product-body {
+  padding: 2%;
+}
+
+.price-stock {
+  display: flex;
+  justify-content: space-between;
+}
+
+.product-description {
+  font: normal 15 px / 27 px "Roboto", Helvetica, Arial, Verdana, sans-serif;
+  word-spacing: normal;
+  color: #666666;
+}
+
+.agotado {
+  background-color: #d9534f; 
+  border: none;
+  border-radius: 10px;
+  height: 50px;
+  width: 120px;
+  color: white;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
+.buy{
+    background-color: #49c779; 
+    border: none;
+    border-radius: 10px;
+    height: 50px;
+    width: 120px;
+    color: white;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+  
+}
