@@ -7,6 +7,7 @@ router.get('/list', userController.list)
 router.get('/listdate', userController.listDate)
 router.post('/signup', userController.signup)
 router.post('/delete', userController.delete)
+router.post('/signin', userController.signin)
 
 router.param('UserId', userController.UserById);
 module.exports = router;

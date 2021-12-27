@@ -12,7 +12,7 @@ const salesSchema = new mongoose.Schema({
   },
   amount: {
     type: Number,
-    required: true,
+    default: 1,
   },
   date: {
     type: Date,

@@ -14,6 +14,10 @@ dotenv.config({
 
 app.use(bodypaser.json())
 
+// app.use(cors({
+//   origin: "https://db-final-proyect.herokuapp.com"
+// }))
+
 // if(process.env.NODE_ENV ==='development'){
 //     app.use(cors({
 //         origin: process.env.CLIENT_URL
@@ -24,7 +28,7 @@ app.use(bodypaser.json())
 
 
 app.use(cors({
-    origin: "https://db-final-proyect.herokuapp.com"
+    origin: "http://localhost:3000"
 }))
 
 // mongoose.connection.on("open", () => {

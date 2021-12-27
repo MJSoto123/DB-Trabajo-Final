@@ -1,14 +1,36 @@
 const Sales = require("../models/sales.model");
+const Product = require("../models/product.model");
+const User = require("../models/user.model");
+
 
 exports.create = (req, res) => {
-  const sales = new Sales(req.body);
-  sales.save((err, result) => {
-    if (err) {
+  const {iduser, idproduct} = req.body
+  User.findOne({ iduser }, (error, user) => {
+    if (error || !user) {
       return res.status(400).json({
-        error: err,
+        error: "User no encontrado",
       });
     }
-    return res.json(result);
+    Product.findOne({idproduct}, (err, product) => {
+      if (err || !product) {
+        return res.status(400).json({
+          error: "Producto no encontrado",
+        });
+      }
+      console.log(user)
+      console.log(product.stock)
+      const sales = new Sales({user,product});
+      sales.save((err,result) =>{
+        if (err) {
+          return res.status(400).json({
+            error: err,
+          });
+        }
+        return res.json(result);
+      })      
+    })
+    
+  // 
   });
 };
 
@@ -58,18 +80,3 @@ exports.SalesById = (req, res, next, id) => {
     next();
   });
 };
-
-// exports.bestSellers = (req, res) => {
-
-//   Sales.find()
-//     .populate("product")
-//     .exec((err, sales) => {
-//       if (err) {
-//         return res.status(400).json({
-//           error: "No se encontró el usuario",
-//         });
-//       }
-//       console.log(sales);
-//       res.json(sales);
-//     });
-// };
