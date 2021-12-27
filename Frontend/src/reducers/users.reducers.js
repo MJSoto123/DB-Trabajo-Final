@@ -12,8 +12,11 @@ export function usersReducer (state, action) {
         data: action.payload.map(data => data)
       }
 
-    // case TYPES.DECREMENT:
-    //   return { contador: state.contador - 1 }
+    case TYPES.DELETE_ONE_ELEMENT:
+      return {
+        ...state,
+        data: state.data.filter(e => e.email !== action.payload)
+      }
 
     // case TYPES.INCREMENT_5:
     //   return { contador: state.contador + action.payload }

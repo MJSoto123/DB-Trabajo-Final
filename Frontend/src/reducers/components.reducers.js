@@ -2,9 +2,12 @@ import { TYPES } from "../actions/components.actions";
 
 export const componentsInitialState = {
   categories: [null],
-  logged: false,
-  offers: null,
-  most_sold_of_category: null
+  
+};
+
+export const productsInitialState = {
+  products: [],
+  
 };
 
 export function ComponentsReducer (state, action) {
@@ -15,8 +18,11 @@ export function ComponentsReducer (state, action) {
         categories: action.payload.map(data => data)
       }
 
-    // case TYPES.DECREMENT:
-    //   return { contador: state.contador - 1 }
+    case TYPES.READ_PRODUCTS_DATA:
+      return {        
+        ...state,
+        products: action.payload.map(data => data)
+      }
 
     // case TYPES.INCREMENT_5:
     //   return { contador: state.contador + action.payload }

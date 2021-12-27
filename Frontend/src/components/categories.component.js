@@ -1,38 +1,67 @@
-import React from "react";
+import React, { useReducer, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { TYPES } from "../actions/components.actions";
+import { getAllCategories } from "../api/categories.api";
+import { getProductsBySubcategory, getProductsList } from "../api/products.api";
+import {
+  ComponentsReducer,
+  productsInitialState,
+} from "../reducers/components.reducers";
 
-export const Categories = () => {
-  return (
-    <div>
-      <h2 className="product-category">Cañas de Pescar</h2>
-      <div className="products-container">
-        <div className="product">
-          <img
-            className="product-img"
-            src="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350"
-            alt="new"
-          />
-          <p className="product-title">ATF 2473 / 20g</p>
-          <p className="product-price">S/.728</p>
+export const Categories = (props) => {
+  const [state, dispatch] = useReducer(ComponentsReducer, productsInitialState);
+
+  useEffect(() => {
+    getProductsList().then((res) => {
+      dispatch({ type: TYPES.READ_PRODUCTS_DATA, payload: res });
+    });
+  }, []);
+
+  const cosita = () => {
+    return props.subcategories.map((e, i) => {
+      var arr = e.split("-");
+      var primer = arr[0];
+      var segundo = "";
+      if (arr.length > 2) {
+        segundo = arr[1] + "-" + arr[2];
+      } else {
+        segundo = arr[1];
+      }
+      var ans = [];
+      for (let i = 0; i < state.products.length; i++) {
+        if (
+          state.products[i].category.category == primer &&
+          state.products[i].category.subcategory == segundo
+        ) {
+          ans.push(state.products[i]);
+        }
+      }
+      // function filtradito(obj) {
+      //   if (obj.category.category==primer && obj.category.subcategory==segundo) {
+      //     return true
+      //   }
+      // }
+      return (
+        <div key={i}>
+          <h2 className="product-category">{e}</h2>
+          <div className="products-container">
+            {/* {JSON.stringify(ans)} */}
+            {ans.map((product, i) => {
+              return (
+                <div className="product" key={i}>
+                  <img className="product-img" src={product.url} alt="new" />
+                  <p className="product-title">{product.model}</p>
+                  <p className="product-price">{product.price}</p>
+                  <Link to={`product/${product._id}`}>
+                    <button>Ver</button>
+                  </Link>
+                </div>
+              );
+            })}
+          </div>
         </div>
-        <div className="product">
-          <img
-            className="product-img"
-            src="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350"
-            alt="new"
-          />
-          <p className="product-title">MIPOSHKA / 120T</p>
-          <p className="product-price">S/.123</p>
-        </div>
-        <div className="product">
-          <img
-            className="product-img"
-            src="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350"
-            alt="new"
-          />
-          <p className="product-title">SHODINGER C-2473 / 20kg</p>
-          <p className="product-price">S/.28</p>
-        </div>
-      </div>
-    </div>
-  )
-}
+      );
+    });
+  };
+  return <div>{cosita()}</div>;
+};

@@ -1,10 +1,7 @@
 import { TYPES } from "../actions/home.actions"; 
 
 export const homeInitialState = {
-  categories: [null],
-  logged: false,
-  offers: null,
-  most_sold_of_category: null
+  subcategories: []
 };
 
 export function homeReducer (state, action) {
@@ -15,8 +12,10 @@ export function homeReducer (state, action) {
         categories: action.payload.map(data => data)
       }
 
-    // case TYPES.DECREMENT:
-    //   return { contador: state.contador - 1 }
+    case TYPES.READ_SUBCATEGORIES_DATA:
+      return {
+        subcategories: action.payload.map(e => e)
+      }
 
     // case TYPES.INCREMENT_5:
     //   return { contador: state.contador + action.payload }

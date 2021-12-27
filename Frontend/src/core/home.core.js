@@ -1,7 +1,7 @@
 import React, { useReducer, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { TYPES } from "../actions/home.actions";
-import { getAllCategories } from "../api/categories.api";
+import { getAllCategories, getSubCategories } from "../api/categories.api";
 import { Carousel } from "../components/carousel.component";
 import { Categories } from "../components/categories.component";
 import { Header } from "../components/header.component";
@@ -12,23 +12,9 @@ import { homeInitialState, homeReducer } from "../reducers/home.reducers";
 export const Home = () => {
   const [state, dispatch] = useReducer(homeReducer, homeInitialState);
 
-  // const categories = () => {
-  //   getAllCategories().then((d) => {
-  //     const element = [];
-  //     for (let i = 0; i < d.length; i++) {
-  //       element.push(d[i].category);
-  //     }
-  //     setData({
-  //       categories: element
-  //     });
-  //   })
-  // }
-
   useEffect(() => {
-    console.log("hola");
-    getAllCategories().then((res) => {
-      console.log(res);
-      dispatch({ type: TYPES.READ_CATEGORIES_DATA, payload: res });
+    getSubCategories().then((res) => {
+      dispatch({ type: TYPES.READ_SUBCATEGORIES_DATA, payload: res });
     });
   }, []);
 
@@ -45,6 +31,7 @@ export const Home = () => {
   return (
     <div>
       <Header />
+      <div>{ShowDashboard()}</div>
       <Carousel>
         <div className="carousel-container">
           <img
@@ -64,8 +51,8 @@ export const Home = () => {
         <div className="carousel-container"> Oferton 4 </div>
         <div className="carousel-container"> Oferton 5 </div>
       </Carousel>
-      <div>{ShowDashboard()}</div>
-      <Categories />
+
+      <Categories subcategories={state.subcategories} />
     </div>
   );
 };

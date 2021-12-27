@@ -4,6 +4,7 @@ import { usersInitialState, usersReducer } from "../../reducers/users.reducers";
 import { getUsersList } from "../../api/user.api";
 import { TYPES } from "../../actions/users.actions";
 import { Header } from "../../components/header.component";
+import { deleteOneUser } from "../../api/users.api";
 
 export const UsersABC = () => {
   const [state, dispatch] = useReducer(usersReducer, usersInitialState);
@@ -14,6 +15,14 @@ export const UsersABC = () => {
       dispatch({ type: TYPES.READ_USERS_DATA, payload: res });
     });
   }, []);
+
+  const deleteElement = async (email) => {
+    await deleteOneUser({e:email}).then(() => {
+      console.log(state);
+      dispatch({ type: TYPES.DELETE_ONE_ELEMENT, payload: email})
+    });
+  }
+
 
   return (
     <div>
@@ -42,7 +51,7 @@ export const UsersABC = () => {
               <td>{e._id}</td>
               <td>{e.created}</td>
               <td>
-                <button>Eliminar</button>
+                <button onClick={() => deleteElement(e.email)}>Eliminar</button>
               </td>
             </tr>
           ))}
